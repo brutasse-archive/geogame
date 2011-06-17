@@ -1,0 +1,7 @@
+{% extends "floppyforms/gis/osm.html" %}
+
+{% block options %}{{ block.super }}
+options['modifiable'] = false;
+options['mouse_position'] = false;
+options['scale_text'] = false;
+{% endblock %}

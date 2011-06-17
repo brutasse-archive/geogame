@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block content %}
+	{% if previous %}
+		<div class="grid_6">
+			<h2 class="{{ correct|yesno:"correct,wrong" }}">{{ correct|yesno:"Correct,Wrong" }}!</h2>
+			{{ previous_form.media }}
+			{{ previous_form.previous }}
+			<script type="text/javascript">
+				map_previous.map.controls[6].destroy();
+				map_previous.map.controls[4].destroy();
+				document.querySelectorAll('#id_previous_span_map a')[1].style.cssText = "display: none;";
+				document.querySelectorAll('#id_previous_span_map')[0].style.cssText = "margin-left: 30px;";
+			</script>
+			<style type="text/css">
+				.olControlAttribution { bottom: 0; }
+				#id_previous_map { margin: 0 auto; }
+				span#id_previous_span_map, #id_previous_span_map div {
+					display: inline-block;
+				}
+			</style>
+			<br style="clear: both;">
+			<p>That was <strong>{{ previous.country }}</strong>, not <strong>{{ previous.wrong_answer }}</strong>.</p>
+		</div>{% endif %}
+
+		<div class="{% if not previous %}prefix_3 suffix_3 {% endif %}grid_6">
+		<h2 class="center grid_6 alpha omega">What country is that?</h2>
+		<div class="clear"></div>
+
+		<div id="country" style="width: 400px; height: 400px;"></div>
+		<textarea class="hidden">{{ country.mpoly.json|safe }}</textarea>
+
+		{% if not previous %}<script type="text/javascript" src="http://openlayers.org/api/2.10/OpenLayers.js"></script>{% endif %}
+		<script type="text/javascript">
+			OpenLayers.Projection.addTransform("EPSG:4326", "EPSG:3857", OpenLayers.Layer.SphericalMercator.projectForward);
+			var map = new OpenLayers.Map({
+					div: 'country',
+					projection: "EPSG:3857",
+					maxExtent: new OpenLayers.Bounds(-20037508,-20037508,20037508,20037508),
+					maxResolution: 156543.0339,
+					numZoomLevels: 20,
+					units: 'm',
+					controls: []
+				}),
+				vector = new OpenLayers.Layer.Vector('country', {
+					styleMap: new OpenLayers.Style({
+						strokeColor: '#a52a2a',
+						strokeWidth: 1.2,
+						fillColor: '#ffa500',
+						fillOpacity: 1
+					})}),
+				features = document.getElementsByTagName('textarea')[{% if previous %}1{% else %}0{% endif %}].innerHTML,
+				parser = new OpenLayers.Format.GeoJSON();
+				document.querySelectorAll('#country')[0].children[0].style.cssText += "margin-left: 30px; width: 400px; height: 400px;";
+				map.addLayer(vector);
+				map.setBaseLayer(vector);
+				features = parser.read(features);
+				for (var i=0; i<features.length; i++) {
+					feature = features[i];
+					feature.geometry.transform(new OpenLayers.Projection('EPSG:4326'), map.getProjectionObject());
+				}
+				vector.addFeatures(features);
+				map.zoomToExtent(vector.getDataExtent());
+		</script><!--
+
+		<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="{{ box }}">
+			<path fill="orange" stroke="brown" stroke-width="0.5%" d="{{ country.svg }}"/>
+		</svg>-->
+
+		<form method="post" action="{% url "question" %}">
+			{% csrf_token %}
+			{% for field in form %}
+				{{ field }}
+			{% endfor %}
+			<p class="center big">
+				<input type="submit" name="left" value="{{ question.left_choice }}">
+				<input type="submit" name="right" value="{{ question.right_choice }}">
+			</p>
+		</form>
+	{% if previous %}</div>{% endif %}
+{% endblock %} 

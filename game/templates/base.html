@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Geo Game</title>
+		<link rel="stylesheet" media="all" href="{{ STATIC_URL }}countries/css/style.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+		{% block extrahead %}{% endblock %}
+	</head>
+	<body lang="en" class="center">
+		<div id="band" class="container_12">
+			{% if user.is_authenticated %}
+			<div class="message grid_6">{% if message %}<span>{{ message }}</span>{% else %}&nbsp;{% endif %}</div>
+				<div class="grid_6">
+					{{ user }} - <strong>{{ user.twitter.score }}</strong> points - level <strong>{{ user.twitter.level }}</strong>
+				</div>
+			{% else %}
+				<div class="grid_12">
+					<a href="{% url "oauth_authorize" %}">Sign in</a> to save your progress
+				</div>
+			{% endif %}
+			</p>
+		</div>
+		<div class="container_12">
+			{% block content %}{% endblock %}
+		</div>
+	</body>
+</html>
