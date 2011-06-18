@@ -88,6 +88,10 @@ svg {
 }
 #id_previous_span_map a:last { display: none; }
 
+a {
+	color: rgb(50, 50, 150);
+}
+
 .wrong { color: rgb(100, 10, 10); }
 .correct { color: rgb(10, 100, 10); }
 

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Suspicious operation detected</h2>
+
+<p class="grid_4 prefix_4 suffix_4">
+It looks like you're trying to submit a duplicate answer, or answering a question you haven't been asked. Anyway, we are unable to check the validity of this answer.
+</p>
+<div class="clear"></div>
+
+<h3><a href="{% url "question" %}">Back to questions</a></h3>
+
+{% endblock %}

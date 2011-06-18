@@ -25,7 +25,7 @@
 			{% block content %}{% endblock %}
 
 			<div class="clear"></div>
-			<div class="grid_12"><a href="{% url "leaderboard" %}">Leaderboard</a></div>
+			{% if not leaderboard %}<div class="grid_12"><a href="{% url "leaderboard" %}">Leaderboard</a></div>{% endif %}
 		</div>
 	</body>
 </html>

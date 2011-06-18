@@ -1,6 +1,7 @@
 import math
 import random
 
+from django.shortcuts import render
 from django.views import generic
 
 from countries.models import Country
@@ -150,9 +151,19 @@ class QuestionView(generic.FormView):
                 message=message,
             ),
         )
+
+    def suspicious_attempt(self):
+        return render(self.request, 'questions/suspicious.html', {})
 question = QuestionView.as_view()
 
 
 class UserStats(generic.ListView):
     queryset = Twitter.objects.select_related().order_by('-score')
+
+    def get_context_data(self, **kwargs):
+        ctx = super(UserStats, self).get_context_data(**kwargs)
+        ctx.update({
+            'leaderboard': True,
+        })
+        return ctx
 user_stats = UserStats.as_view()
