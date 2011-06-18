@@ -58,6 +58,17 @@ svg {
 	margin: 0 auto 1em auto;
 }
 
+.header {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.left { text-align: left; }
+.you {
+	font-weight: bold;
+	color: rgb(10, 100, 10);
+}
+
 .hidden { display: none; }
 
 .col {

@@ -10,6 +10,7 @@ from questions import views
 
 urlpatterns = patterns('',
     url(r'^$', views.question, name='question'),
+    url(r'^leaderboard/$', views.user_stats, name='leaderboard'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^oauth/', include('users.urls')),
 )

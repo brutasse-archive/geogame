@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Leaderboard</h2>
+
+<div class="left grid_6 prefix_3 suffix_3">
+	<div class="grid_1 header alpha">Rank</div>
+	<div class="grid_3 header">User</div>
+	<div class="grid_1 header">Score</div>
+	<div class="grid_1 header omega">Level</div>
+	<div class="clear"></div>
+
+	{% for twitter in object_list %}
+		<div class="grid_1 alpha header">{{ forloop.counter }}</div>
+		<div class="grid_3{% if user.username == twitter.user.username %} you{% endif %}">{{ twitter.user.username }}</div>
+		<div class="grid_1">{{ twitter.score }}</div>
+		<div class="grid_1 omega">{{ twitter.level }}</div>
+		<div class="clear"></div>
+	{% endfor %}
+</div>
+
+{% endblock %}

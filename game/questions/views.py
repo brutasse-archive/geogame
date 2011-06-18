@@ -6,6 +6,7 @@ from django.views import generic
 from countries.models import Country
 from questions.forms import QuestionForm, PreviousForm
 from questions.models import Account, Question
+from users.models import Twitter
 
 
 LEVEL_CHOICES = {
@@ -150,3 +151,8 @@ class QuestionView(generic.FormView):
             ),
         )
 question = QuestionView.as_view()
+
+
+class UserStats(generic.ListView):
+    queryset = Twitter.objects.select_related().order_by('-score')
+user_stats = UserStats.as_view()
